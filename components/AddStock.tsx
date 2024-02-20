@@ -2,14 +2,16 @@
 
 import * as AlertDialog from "@radix-ui/react-alert-dialog";
 import { ErrorMessage, Field, Form, Formik } from "formik";
-import { useRouter } from "next/navigation";
-
-interface LoginProps {
+interface AddStockProps {
   children: React.ReactNode;
 }
+type stock = {
+  description: string;
+  units: number;
+  unit_price: number;
+};
 
-function Login({ children }: LoginProps) {
-  const router = useRouter();
+function AddStock({ children }: AddStockProps) {
   return (
     <AlertDialog.Root>
       <AlertDialog.Trigger asChild>{children}</AlertDialog.Trigger>
@@ -17,27 +19,26 @@ function Login({ children }: LoginProps) {
         <AlertDialog.Overlay className="fixed bg-neutral-900/90 inset-0 backdrop-blur z-[30]" />
         <AlertDialog.Content className="fixed focus:outline-none drop-shadow-md border z-[31] border-neutral-700 top-[50%] left-[50%] h-[70%] lg:w-[30%] md:w-[30%] w-[70%] translate-y-[-50%] translate-x-[-50%] rounded-md bg-neutral-800 p-[35px]">
           <AlertDialog.Title className={`text-[22px] font-bold`}>
-            Admin Login
+            Add Stock
           </AlertDialog.Title>
-          <AlertDialog.Description>
-            Login to your account
-          </AlertDialog.Description>
           <Formik
-            initialValues={{ email: "", password: "" }}
+            initialValues={{ description: "", units: 0, unit_price: 0 }}
             validate={(values) => {
               const errors: any = {};
-              if (!values.email) {
-                errors.email = "Required";
-              } else if (
-                !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(values.email)
-              ) {
-                errors.email = "Invalid Email address";
+              if (!values.description) {
+                errors.description = "Required";
+              } else if (!values.units) {
+                errors.units = "Required";
+              } else if (!values.unit_price) {
+                errors.unit_price = "Required";
+              } else if (typeof values.unit_price !== "number") {
+                errors.unit_price = "Enter a number";
+              } else if (typeof values.units !== "number") {
+                errors.units = "Enter a number";
               }
               return errors;
             }}
-            onSubmit={(values, { setSubmitting }) => {
-              router.push("/admin");
-            }}
+            onSubmit={(values, { setSubmitting }) => {}}
           >
             {({
               values,
@@ -51,47 +52,37 @@ function Login({ children }: LoginProps) {
                 className={`block w-[90%] h-full py-5 mx-auto`}
               >
                 <label className={`block text-[13px]`}>
-                  Email
+                  Description
                   <Field
-                    type="email"
-                    name="email"
+                    type="text"
                     onChange={handleChange}
                     onBlur={handleBlur}
-                    placeholder="Enter your email here"
-                    value={values.email}
-                    className={`w-full h-[40px] text-black rounded-lg ps-1 focus:outline-none`}
+                    name="description"
+                    value={values.description}
+                    className={`w-full h-[40px] text-black rounded-lg ps-2 focus:outline-none`}
                   />
                 </label>
                 <ErrorMessage
                   className={`text-red-600 italic text-[13px]`}
-                  name="email"
+                  name="description"
                   component={"p"}
                 />
-                <label className={`block text-[13px] my-7`}>
-                  Password
+                <label className={`block text-[13px] my-6`}>
+                  Units
                   <Field
-                    type="password"
-                    name="password"
-                    placeholder="Enter your password here"
+                    type="number"
+                    name="units"
                     onChange={handleChange}
                     onBlur={handleBlur}
-                    value={values.password}
-                    className={`w-full h-[40px] text-black rounded-lg ps-1 focus:outline-none`}
+                    value={values.units}
+                    className={`w-full h-[40px] text-black rounded-lg ps-2 focus:outline-none`}
                   />
                 </label>
                 <ErrorMessage
                   className={`text-red-600 italic text-[13px]`}
-                  name="password"
+                  name="units"
                   component={"p"}
                 />
-
-                <button
-                  type="submit"
-                  disabled={isSubmitting}
-                  className={`w-[150px] mx-auto block px-2 h-[40px] rounded-lg bg-indigo-600`}
-                >
-                  Login
-                </button>
               </Form>
             )}
           </Formik>
@@ -122,11 +113,11 @@ function Login({ children }: LoginProps) {
               </svg>
             </button>
           </AlertDialog.Cancel>
-          <AlertDialog.Action />
+          <AlertDialog.Action></AlertDialog.Action>
         </AlertDialog.Content>
       </AlertDialog.Portal>
     </AlertDialog.Root>
   );
 }
 
-export default Login;
+export default AddStock;
