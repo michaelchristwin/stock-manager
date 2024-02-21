@@ -2,6 +2,9 @@
 
 import * as AlertDialog from "@radix-ui/react-alert-dialog";
 import { ErrorMessage, Field, Form, Formik } from "formik";
+import toast from "react-hot-toast";
+import axios from "axios";
+import { useState } from "react";
 interface AddStockProps {
   children: React.ReactNode;
 }
@@ -12,8 +15,9 @@ type stock = {
 };
 
 function AddStock({ children }: AddStockProps) {
+  const [open, setOpen] = useState(false);
   return (
-    <AlertDialog.Root>
+    <AlertDialog.Root open={open} onOpenChange={setOpen}>
       <AlertDialog.Trigger asChild>{children}</AlertDialog.Trigger>
       <AlertDialog.Portal>
         <AlertDialog.Overlay className="fixed bg-neutral-900/90 inset-0 backdrop-blur z-[30]" />
@@ -38,7 +42,26 @@ function AddStock({ children }: AddStockProps) {
               }
               return errors;
             }}
-            onSubmit={(values, { setSubmitting }) => {}}
+            onSubmit={(values) => {
+              toast.promise(
+                (async () => {
+                  const res = await axios.post<stock>(
+                    "http://localhost:8080/stocks",
+                    values
+                  );
+                  if (res.status !== 200) {
+                    console.error("Form submission failed");
+                  }
+                  setOpen(false);
+                  return res;
+                })(),
+                {
+                  loading: "Form submitting...",
+                  success: "Form Submission successful",
+                  error: "Form Submission failed",
+                }
+              );
+            }}
           >
             {({
               values,
@@ -83,6 +106,29 @@ function AddStock({ children }: AddStockProps) {
                   name="units"
                   component={"p"}
                 />
+                <label className={`block text-[13px] my-6`}>
+                  Unit Price
+                  <Field
+                    type="number"
+                    name="unit_price"
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    value={values.unit_price}
+                    className={`w-full h-[40px] text-black rounded-lg ps-2 focus:outline-none`}
+                  />
+                </label>
+                <ErrorMessage
+                  className={`text-red-600 italic text-[13px]`}
+                  name="unit_price"
+                  component={"p"}
+                />
+                <button
+                  type="submit"
+                  disabled={isSubmitting}
+                  className={`w-[150px] mx-auto block px-2 h-[40px] rounded-lg bg-indigo-600`}
+                >
+                  Add
+                </button>
               </Form>
             )}
           </Formik>
