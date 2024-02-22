@@ -8,7 +8,7 @@ import { useState } from "react";
 interface AddStockProps {
   children: React.ReactNode;
 }
-type stock = {
+export type stock2 = {
   description: string;
   units: number;
   unit_price: number;
@@ -17,7 +17,7 @@ type stock = {
 function AddStock({ children }: AddStockProps) {
   const [open, setOpen] = useState(false);
 
-  const submitData = (values: stock) => {
+  const submitData = (values: stock2) => {
     return new Promise((resolve, reject) => {
       axios
         .post("http://localhost:8080/stocks", JSON.stringify(values))
@@ -57,8 +57,8 @@ function AddStock({ children }: AddStockProps) {
             onSubmit={(values, { setSubmitting }) => {
               toast
                 .promise(submitData(values), {
-                  loading: "Form submitting...",
-                  success: "Form Submission successful",
+                  loading: "Adding Stock...",
+                  success: "Stock added successfully",
                   error: "Form Submission failed",
                 })
                 .then(() => setSubmitting(false))

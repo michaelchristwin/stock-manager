@@ -13,6 +13,7 @@ export type stock = {
 };
 function Admin() {
   const [stocks, setStocks] = useState<stock[] | undefined>(undefined);
+
   useEffect(() => {
     (async () => {
       try {
@@ -37,7 +38,8 @@ function Admin() {
     <div className={`w-full space-y-5 p-5`}>
       <div className={`w-full flex justify-start space-x-8 items-center`}>
         <button
-          className={`w-fit h-[35px] p-2 rounded-lg text-black bg-indigo-600 flex justify-center items-center`}
+          onClick={() => window.location.reload()}
+          className={`w-fit h-[35px] p-2 rounded-lg text-black hover:opacity-75 active:opacity-60 bg-indigo-600 flex justify-center items-center`}
         >
           <svg
             fill="none"

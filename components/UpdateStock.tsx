@@ -5,12 +5,25 @@ import toast from "react-hot-toast";
 import axios from "axios";
 import { useState } from "react";
 import { stock } from "@/app/admin/page";
+import { stock2 } from "./AddStock";
 interface UpdateStockProps {
   children: React.ReactNode;
   data: stock;
 }
 function UpdateStock({ children, data }: UpdateStockProps) {
   const [open, setOpen] = useState(false);
+  const updateData = (values: stock2) => {
+    return new Promise((resolve, reject) => {
+      axios
+        .put(`http://localhost:8080/stocks/${data.id}`, values)
+        .then((res) => {
+          setOpen(false);
+          window.location.reload();
+          resolve(res);
+        })
+        .catch((err) => reject(err));
+    });
+  };
   return (
     <AlertDialog.Root open={open} onOpenChange={setOpen}>
       <AlertDialog.Trigger asChild>{children}</AlertDialog.Trigger>
@@ -41,7 +54,16 @@ function UpdateStock({ children, data }: UpdateStockProps) {
               }
               return errors;
             }}
-            onSubmit={(values, { setSubmitting }) => {}}
+            onSubmit={(values, { setSubmitting }) => {
+              toast
+                .promise(updateData(values), {
+                  loading: "Updating Stock...",
+                  success: "Stock updated successfully",
+                  error: "Update failed",
+                })
+                .then(() => setSubmitting(false))
+                .catch(() => setSubmitting(false));
+            }}
           >
             {({
               values,
