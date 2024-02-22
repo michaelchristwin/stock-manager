@@ -1,33 +1,16 @@
 "use client";
-
 import * as AlertDialog from "@radix-ui/react-alert-dialog";
 import { ErrorMessage, Field, Form, Formik } from "formik";
 import toast from "react-hot-toast";
 import axios from "axios";
 import { useState } from "react";
-interface AddStockProps {
+import { stock } from "@/app/admin/page";
+interface UpdateStockProps {
   children: React.ReactNode;
+  data: stock;
 }
-type stock = {
-  description: string;
-  units: number;
-  unit_price: number;
-};
-
-function AddStock({ children }: AddStockProps) {
+function UpdateStock({ children, data }: UpdateStockProps) {
   const [open, setOpen] = useState(false);
-
-  const submitData = (values: stock) => {
-    return new Promise((resolve, reject) => {
-      axios
-        .post("http://localhost:8080/stocks", JSON.stringify(values))
-        .then((res) => {
-          resolve(res);
-          setOpen(false);
-        })
-        .catch((err) => reject(err));
-    });
-  };
   return (
     <AlertDialog.Root open={open} onOpenChange={setOpen}>
       <AlertDialog.Trigger asChild>{children}</AlertDialog.Trigger>
@@ -35,10 +18,14 @@ function AddStock({ children }: AddStockProps) {
         <AlertDialog.Overlay className="fixed bg-neutral-900/90 inset-0 backdrop-blur z-[30]" />
         <AlertDialog.Content className="fixed focus:outline-none drop-shadow-md border z-[31] border-neutral-700 top-[50%] left-[50%] h-[70%] lg:w-[30%] md:w-[30%] w-[70%] translate-y-[-50%] translate-x-[-50%] rounded-md bg-neutral-800 p-[35px]">
           <AlertDialog.Title className={`text-[22px] font-bold`}>
-            Add Stock
+            Update Stock
           </AlertDialog.Title>
           <Formik
-            initialValues={{ description: "", units: 0, unit_price: 0 }}
+            initialValues={{
+              description: data.description,
+              units: data.units,
+              unit_price: data.unit_price,
+            }}
             validate={(values) => {
               const errors: any = {};
               if (!values.description) {
@@ -54,16 +41,7 @@ function AddStock({ children }: AddStockProps) {
               }
               return errors;
             }}
-            onSubmit={(values, { setSubmitting }) => {
-              toast
-                .promise(submitData(values), {
-                  loading: "Form submitting...",
-                  success: "Form Submission successful",
-                  error: "Form Submission failed",
-                })
-                .then(() => setSubmitting(false))
-                .catch(() => setSubmitting(false));
-            }}
+            onSubmit={(values, { setSubmitting }) => {}}
           >
             {({
               values,
@@ -132,7 +110,7 @@ function AddStock({ children }: AddStockProps) {
                   className={`w-[150px] mx-auto block disabled:bg-slate-500 px-2 h-[40px] rounded-lg bg-indigo-600`}
                 >
                   {!isSubmitting ? (
-                    <p>Add</p>
+                    <p>Update</p>
                   ) : (
                     <svg
                       viewBox="0 0 24 24"
@@ -191,4 +169,4 @@ function AddStock({ children }: AddStockProps) {
   );
 }
 
-export default AddStock;
+export default UpdateStock;
