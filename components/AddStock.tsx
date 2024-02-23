@@ -24,6 +24,7 @@ function AddStock({ children }: AddStockProps) {
         .then((res) => {
           resolve(res);
           setOpen(false);
+          window.location.reload();
         })
         .catch((err) => reject(err));
     });
