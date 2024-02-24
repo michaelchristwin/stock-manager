@@ -23,15 +23,15 @@ function Login({ children }: LoginProps) {
             Login to your account
           </AlertDialog.Description>
           <Formik
-            initialValues={{ email: "", password: "" }}
+            initialValues={{ username: "", password: "" }}
             validate={(values) => {
               const errors: any = {};
-              if (!values.email) {
-                errors.email = "Required";
-              } else if (
-                !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(values.email)
-              ) {
+              if (!values.username) {
+                errors.username = "Required";
+              } else if (typeof values.username !== "string") {
                 errors.email = "Invalid Email address";
+              } else if (!values.password) {
+                errors.password = "Required";
               }
               return errors;
             }}
@@ -53,12 +53,12 @@ function Login({ children }: LoginProps) {
                 <label className={`block text-[13px]`}>
                   Email
                   <Field
-                    type="email"
-                    name="email"
+                    type="username"
+                    name="username"
                     onChange={handleChange}
                     onBlur={handleBlur}
                     placeholder="Enter your email here"
-                    value={values.email}
+                    value={values.username}
                     className={`w-full h-[40px] text-black rounded-lg ps-1 focus:outline-none`}
                   />
                 </label>
