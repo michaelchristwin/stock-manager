@@ -4,43 +4,24 @@ import * as AlertDialog from "@radix-ui/react-alert-dialog";
 import axios from "axios";
 import { ErrorMessage, Field, Form, Formik } from "formik";
 import { useRouter } from "next/navigation";
-import Signup from "./SignUp";
-import { useEffect, useRef, useState } from "react";
 
-interface LoginProps {
+interface SignupProps {
   children: React.ReactNode;
 }
 
-function Login({ children }: LoginProps) {
-  const [open, setOpen] = useState(false);
-  const buttonRef = useRef<HTMLButtonElement | null>(null);
+function Signup({ children }: SignupProps) {
   const router = useRouter();
-  useEffect(() => {
-    function handleClick(event: MouseEvent) {
-      if (buttonRef.current) {
-        event.stopPropagation();
-        setOpen(false);
-        const continuePhase = new Event("click");
-        buttonRef.current.dispatchEvent(continuePhase);
-      }
-    }
-    function handleClick2(event: MouseEvent) {}
-    if (buttonRef.current) {
-      buttonRef.current.addEventListener("click", handleClick);
-    }
-    return buttonRef.current?.removeEventListener("click", handleClick);
-  }, []);
   return (
-    <AlertDialog.Root open={open} onOpenChange={setOpen}>
+    <AlertDialog.Root>
       <AlertDialog.Trigger asChild>{children}</AlertDialog.Trigger>
       <AlertDialog.Portal>
         <AlertDialog.Overlay className="fixed bg-neutral-900/90 inset-0 backdrop-blur z-[30]" />
         <AlertDialog.Content className="fixed focus:outline-none drop-shadow-md border z-[31] border-neutral-700 top-[50%] left-[50%] h-[70%] lg:w-[30%] md:w-[30%] w-[70%] translate-y-[-50%] translate-x-[-50%] rounded-md bg-neutral-800 p-[35px]">
           <AlertDialog.Title className={`text-[22px] font-bold`}>
-            Admin Login
+            Signup
           </AlertDialog.Title>
           <AlertDialog.Description>
-            Login to your account
+            Signup for an account
           </AlertDialog.Description>
           <Formik
             initialValues={{ username: "", password: "" }}
@@ -56,7 +37,10 @@ function Login({ children }: LoginProps) {
               return errors;
             }}
             onSubmit={async (values, { setSubmitting }) => {
-              let res = await axios.post("http://localhost:8080/login", values);
+              let res = await axios.post(
+                "http://localhost:8080/signup",
+                values
+              );
               if (res.status !== 200) {
                 console.error("Authentication failed");
               }
@@ -114,16 +98,13 @@ function Login({ children }: LoginProps) {
                   disabled={isSubmitting}
                   className={`w-[150px] mx-auto block px-2 h-[40px] rounded-lg bg-indigo-600`}
                 >
-                  Login
+                  Signup
                 </button>
-                <Signup>
-                  <button
-                    //onClick={() => setOpen(false)}
-                    className={`mt-[30px] block text-[13px] mx-auto hover:underline`}
-                  >
-                    Don&lsquo;t have an account?
-                  </button>
-                </Signup>
+                <p
+                  className={`mt-[30px] text-[13px] text-center hover:underline hover:cursor-pointer`}
+                >
+                  Don&lsquo;t have an account?
+                </p>
               </Form>
             )}
           </Formik>
@@ -162,4 +143,4 @@ function Login({ children }: LoginProps) {
   );
 }
 
-export default Login;
+export default Signup;
