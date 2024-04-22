@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Login from "./Login";
+import Signup from "./SignUp";
 
 function Navbar() {
   return (
@@ -16,7 +17,7 @@ function Navbar() {
         />
         <p className={`text-[22px] font-bold`}>XENOS</p>
       </div>
-      <div className={`flex`}>
+      <div className={`flex space-x-3 items-center`}>
         <Login>
           <button
             className={`bg-[#142bd4] hover:opacity-80 active:opacity-65 rounded-[5px] w-[75px] h-[30px]`}
@@ -24,6 +25,13 @@ function Navbar() {
             Login
           </button>
         </Login>
+        <Signup>
+          <button
+            className={`bg-[#142bd4] hover:opacity-80 active:opacity-65 rounded-[5px] w-[75px] h-[30px]`}
+          >
+            Signup
+          </button>
+        </Signup>
       </div>
     </nav>
   );

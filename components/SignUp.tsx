@@ -38,7 +38,7 @@ function Signup({ children }: SignupProps) {
             }}
             onSubmit={async (values, { setSubmitting }) => {
               let res = await axios.post(
-                "http://localhost:8080/signup",
+                "http://localhost:3001/signup",
                 values
               );
               if (res.status !== 200) {
@@ -100,11 +100,6 @@ function Signup({ children }: SignupProps) {
                 >
                   Signup
                 </button>
-                <p
-                  className={`mt-[30px] text-[13px] text-center hover:underline hover:cursor-pointer`}
-                >
-                  Don&lsquo;t have an account?
-                </p>
               </Form>
             )}
           </Formik>

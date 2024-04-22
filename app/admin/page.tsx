@@ -5,6 +5,7 @@ import DeleteStock from "@/components/DeleteStock";
 import UpdateStock from "@/components/UpdateStock";
 import axios from "axios";
 import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 
 export type stock = {
   id: number;
@@ -14,11 +15,13 @@ export type stock = {
 };
 function Admin() {
   const [stocks, setStocks] = useState<stock[] | undefined>(undefined);
-
+  const router = useRouter();
   useEffect(() => {
     (async () => {
       try {
-        const res = await axios.get("http://localhost:8080/stocks");
+        const res = await axios.get("http://localhost:3001/admin/stocks", {
+          method: "GET",
+        });
         let data = res.data.map((item: any, index: number) => {
           let inventory: stock = {
             id: item.ID,
@@ -30,8 +33,12 @@ function Admin() {
         });
         console.log(data);
         setStocks(data);
-      } catch (err) {
-        console.error(err);
+      } catch (err: any) {
+        if (err.response.status === 401) {
+          router.push("/");
+          console.log("pushed");
+        }
+        // console.error(err.response);
       }
     })();
   }, []);

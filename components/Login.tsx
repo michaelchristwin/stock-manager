@@ -15,21 +15,13 @@ function Login({ children }: LoginProps) {
   const [open, setOpen] = useState(false);
   const buttonRef = useRef<HTMLButtonElement | null>(null);
   const router = useRouter();
-  useEffect(() => {
-    function handleClick(event: MouseEvent) {
-      if (buttonRef.current) {
-        event.stopPropagation();
-        setOpen(false);
-        const continuePhase = new Event("click");
-        buttonRef.current.dispatchEvent(continuePhase);
-      }
-    }
-    function handleClick2(event: MouseEvent) {}
-    if (buttonRef.current) {
-      buttonRef.current.addEventListener("click", handleClick);
-    }
-    return buttonRef.current?.removeEventListener("click", handleClick);
-  }, []);
+
+  function handleClick(event: React.MouseEvent<HTMLButtonElement, MouseEvent>) {
+    event.stopPropagation();
+    Signup({ children: buttonRef.current as any });
+    //setOpen(false);
+  }
+
   return (
     <AlertDialog.Root open={open} onOpenChange={setOpen}>
       <AlertDialog.Trigger asChild>{children}</AlertDialog.Trigger>
@@ -56,7 +48,7 @@ function Login({ children }: LoginProps) {
               return errors;
             }}
             onSubmit={async (values, { setSubmitting }) => {
-              let res = await axios.post("http://localhost:8080/login", values);
+              let res = await axios.post("http://localhost:3001/login", values);
               if (res.status !== 200) {
                 console.error("Authentication failed");
               }
@@ -116,14 +108,6 @@ function Login({ children }: LoginProps) {
                 >
                   Login
                 </button>
-                <Signup>
-                  <button
-                    //onClick={() => setOpen(false)}
-                    className={`mt-[30px] block text-[13px] mx-auto hover:underline`}
-                  >
-                    Don&lsquo;t have an account?
-                  </button>
-                </Signup>
               </Form>
             )}
           </Formik>

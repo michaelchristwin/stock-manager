@@ -15,7 +15,7 @@ function UpdateStock({ children, data }: UpdateStockProps) {
   const updateData = (values: stock2) => {
     return new Promise((resolve, reject) => {
       axios
-        .put(`http://localhost:8080/stocks/${data.id}`, values)
+        .put(`http://localhost:3001/admin/stocks/${data.id}`, values)
         .then((res) => {
           setOpen(false);
           window.location.reload();
