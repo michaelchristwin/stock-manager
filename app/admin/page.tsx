@@ -20,8 +20,11 @@ function Admin() {
     (async () => {
       try {
         const res = await axios.get("http://localhost:3001/admin/stocks", {
-          method: "GET",
+          withCredentials: true,
         });
+        if (!res.data) {
+          return;
+        }
         let data = res.data.map((item: any, index: number) => {
           let inventory: stock = {
             id: item.ID,
@@ -31,14 +34,14 @@ function Admin() {
           };
           return inventory;
         });
-        console.log(data);
+        //console.log(data);
         setStocks(data);
       } catch (err: any) {
-        if (err.response.status === 401) {
+        if (err.response && err.response.status === 401) {
           router.push("/");
           console.log("pushed");
         }
-        // console.error(err.response);
+        console.error(err);
       }
     })();
   }, []);

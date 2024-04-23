@@ -48,11 +48,18 @@ function Login({ children }: LoginProps) {
               return errors;
             }}
             onSubmit={async (values, { setSubmitting }) => {
-              let res = await axios.post("http://localhost:3001/login", values);
+              let res = await axios.post(
+                "http://localhost:3001/login",
+                values,
+                {
+                  withCredentials: true,
+                }
+              );
               if (res.status !== 200) {
                 console.error("Authentication failed");
               }
               router.push("/admin");
+              setOpen(false);
             }}
           >
             {({

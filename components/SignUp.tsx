@@ -4,6 +4,7 @@ import * as AlertDialog from "@radix-ui/react-alert-dialog";
 import axios from "axios";
 import { ErrorMessage, Field, Form, Formik } from "formik";
 import { useRouter } from "next/navigation";
+import { useState } from "react";
 
 interface SignupProps {
   children: React.ReactNode;
@@ -11,8 +12,9 @@ interface SignupProps {
 
 function Signup({ children }: SignupProps) {
   const router = useRouter();
+  const [open, setOpen] = useState(false);
   return (
-    <AlertDialog.Root>
+    <AlertDialog.Root open={open} onOpenChange={setOpen}>
       <AlertDialog.Trigger asChild>{children}</AlertDialog.Trigger>
       <AlertDialog.Portal>
         <AlertDialog.Overlay className="fixed bg-neutral-900/90 inset-0 backdrop-blur z-[30]" />
@@ -30,7 +32,7 @@ function Signup({ children }: SignupProps) {
               if (!values.username) {
                 errors.username = "Required";
               } else if (typeof values.username !== "string") {
-                errors.email = "Invalid Email address";
+                errors.email = "Invalid username";
               } else if (!values.password) {
                 errors.password = "Required";
               }
@@ -43,8 +45,9 @@ function Signup({ children }: SignupProps) {
               );
               if (res.status !== 200) {
                 console.error("Authentication failed");
+              } else if (res.status === 200) {
+                setOpen(false);
               }
-              router.push("/admin");
             }}
           >
             {({
@@ -72,7 +75,7 @@ function Signup({ children }: SignupProps) {
                 </label>
                 <ErrorMessage
                   className={`text-red-600 italic text-[13px]`}
-                  name="email"
+                  name="username"
                   component={"p"}
                 />
                 <label className={`block text-[13px] my-7`}>
