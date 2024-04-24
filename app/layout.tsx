@@ -3,6 +3,8 @@ import { DM_Sans } from "next/font/google";
 import "./globals.css";
 import Navbar from "@/components/Navbar";
 import { Toaster } from "react-hot-toast";
+import ContextWrapper from "@/components/ContextWrapper";
+//import { AppContext } from "@/context/LoginContext";
 
 const dmsans = DM_Sans({ subsets: ["latin"] });
 
@@ -18,11 +20,13 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={dmsans.className}>
-        <Toaster />
-        <Navbar />
-        <div>{children}</div>
-      </body>
+      <ContextWrapper>
+        <body className={dmsans.className}>
+          <Toaster />
+          <Navbar />
+          <div>{children}</div>
+        </body>
+      </ContextWrapper>
     </html>
   );
 }

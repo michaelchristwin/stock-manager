@@ -11,21 +11,15 @@ type AppContextProps = {
 };
 
 type State = {
-  showLogin: boolean;
-  setShowLogin: Dispatch<SetStateAction<boolean>>;
-  showSignup: boolean;
-  setShowSignup: Dispatch<SetStateAction<boolean>>;
+  loggedIn: boolean;
+  setLoggedIn: Dispatch<SetStateAction<boolean>>;
 };
 const Context = createContext<State | undefined>(undefined);
 export const AppContext = ({ children }: AppContextProps) => {
-  const [showLogin, setShowLogin] = useState(true);
-  const [showSignup, setShowSignup] = useState(false);
-
+  const [loggedIn, setLoggedIn] = useState(false);
   const state: State = {
-    showLogin,
-    setShowLogin,
-    showSignup,
-    setShowSignup,
+    loggedIn,
+    setLoggedIn,
   };
   return <Context.Provider value={state}>{children}</Context.Provider>;
 };

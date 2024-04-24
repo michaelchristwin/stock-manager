@@ -4,8 +4,8 @@ import * as AlertDialog from "@radix-ui/react-alert-dialog";
 import axios from "axios";
 import { ErrorMessage, Field, Form, Formik } from "formik";
 import { useRouter } from "next/navigation";
-import Signup from "./SignUp";
-import { useEffect, useRef, useState } from "react";
+import { useState } from "react";
+import { useAppContext } from "@/context/LoginContext";
 
 interface LoginProps {
   children: React.ReactNode;
@@ -13,15 +13,8 @@ interface LoginProps {
 
 function Login({ children }: LoginProps) {
   const [open, setOpen] = useState(false);
-  const buttonRef = useRef<HTMLButtonElement | null>(null);
   const router = useRouter();
-
-  function handleClick(event: React.MouseEvent<HTMLButtonElement, MouseEvent>) {
-    event.stopPropagation();
-    Signup({ children: buttonRef.current as any });
-    //setOpen(false);
-  }
-
+  const { setLoggedIn } = useAppContext();
   return (
     <AlertDialog.Root open={open} onOpenChange={setOpen}>
       <AlertDialog.Trigger asChild>{children}</AlertDialog.Trigger>
@@ -48,6 +41,7 @@ function Login({ children }: LoginProps) {
               return errors;
             }}
             onSubmit={async (values, { setSubmitting }) => {
+              setSubmitting(true);
               let res = await axios.post(
                 "http://localhost:3001/login",
                 values,
@@ -57,9 +51,12 @@ function Login({ children }: LoginProps) {
               );
               if (res.status !== 200) {
                 console.error("Authentication failed");
+              } else {
+                setSubmitting(false);
+                setLoggedIn(true);
+                router.push("/admin");
+                setOpen(false);
               }
-              router.push("/admin");
-              setOpen(false);
             }}
           >
             {({

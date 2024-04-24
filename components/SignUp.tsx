@@ -3,15 +3,14 @@
 import * as AlertDialog from "@radix-ui/react-alert-dialog";
 import axios from "axios";
 import { ErrorMessage, Field, Form, Formik } from "formik";
-import { useRouter } from "next/navigation";
 import { useState } from "react";
+import toast from "react-hot-toast";
 
 interface SignupProps {
   children: React.ReactNode;
 }
 
 function Signup({ children }: SignupProps) {
-  const router = useRouter();
   const [open, setOpen] = useState(false);
   return (
     <AlertDialog.Root open={open} onOpenChange={setOpen}>
@@ -39,6 +38,7 @@ function Signup({ children }: SignupProps) {
               return errors;
             }}
             onSubmit={async (values, { setSubmitting }) => {
+              setSubmitting(true);
               let res = await axios.post(
                 "http://localhost:3001/signup",
                 values
@@ -46,7 +46,9 @@ function Signup({ children }: SignupProps) {
               if (res.status !== 200) {
                 console.error("Authentication failed");
               } else if (res.status === 200) {
+                setSubmitting(false);
                 setOpen(false);
+                toast.success("Sign up successful, proceed to login");
               }
             }}
           >
