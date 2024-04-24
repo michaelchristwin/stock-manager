@@ -28,7 +28,7 @@ function Admin() {
         if (!res.data) {
           return;
         }
-        let data = res.data.map((item: any, index: number) => {
+        let data = res.data.map((item: any) => {
           let inventory: stock = {
             id: item.ID,
             description: item.Description,
