@@ -19,9 +19,12 @@ function Admin() {
   useEffect(() => {
     (async () => {
       try {
-        const res = await axios.get("http://localhost:3001/admin/stocks", {
-          withCredentials: true,
-        });
+        const res = await axios.get(
+          "https://gin-backend.onrender.com/admin/stocks",
+          {
+            withCredentials: true,
+          }
+        );
         if (!res.data) {
           return;
         }

@@ -20,7 +20,10 @@ function AddStock({ children }: AddStockProps) {
   const submitData = (values: stock2) => {
     return new Promise((resolve, reject) => {
       axios
-        .post("http://localhost:3001/admin/stocks", JSON.stringify(values))
+        .post(
+          "https://gin-backend.onrender.com/admin/stocks",
+          JSON.stringify(values)
+        )
         .then((res) => {
           resolve(res);
           setOpen(false);

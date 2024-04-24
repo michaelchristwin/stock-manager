@@ -40,7 +40,7 @@ function Signup({ children }: SignupProps) {
             onSubmit={async (values, { setSubmitting }) => {
               setSubmitting(true);
               let res = await axios.post(
-                "http://localhost:3001/signup",
+                "https://gin-backend.onrender.com/signup",
                 values
               );
               if (res.status !== 200) {
