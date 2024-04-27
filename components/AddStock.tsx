@@ -16,14 +16,11 @@ export type stock2 = {
 
 function AddStock({ children }: AddStockProps) {
   const [open, setOpen] = useState(false);
-
+  const API = process.env.NEXT_PUBLIC_URL;
   const submitData = (values: stock2) => {
     return new Promise((resolve, reject) => {
       axios
-        .post(
-          "https://gin-backend.onrender.com/admin/stocks",
-          JSON.stringify(values)
-        )
+        .post(`${API}/admin/stocks`, JSON.stringify(values))
         .then((res) => {
           resolve(res);
           setOpen(false);

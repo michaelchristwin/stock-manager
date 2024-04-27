@@ -16,15 +16,13 @@ export type stock = {
 function Admin() {
   const [stocks, setStocks] = useState<stock[] | undefined>(undefined);
   const router = useRouter();
+  const API = process.env.NEXT_PUBLIC_URL;
   useEffect(() => {
     (async () => {
       try {
-        const res = await axios.get(
-          "https://gin-backend.onrender.com/admin/stocks",
-          {
-            withCredentials: true,
-          }
-        );
+        const res = await axios.get(`${API}/admin/stocks`, {
+          withCredentials: true,
+        });
         if (!res.data) {
           return;
         }

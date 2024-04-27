@@ -4,6 +4,7 @@ import axios from "axios";
 import { Pacifico } from "next/font/google";
 import { useEffect } from "react";
 import { useAppContext } from "@/context/LoginContext";
+import { useRouter } from "next/navigation";
 
 const font = Pacifico({
   weight: "400",
@@ -12,15 +13,17 @@ const font = Pacifico({
 
 export default function Home() {
   const { setLoggedIn } = useAppContext();
+  const router = useRouter();
+  const API = process.env.NEXT_PUBLIC_URL;
   useEffect(() => {
     (async () => {
       try {
-        const res = await axios.get("https://gin-backend.onrender.com", {
+        const res = await axios.get(API as string, {
           withCredentials: true,
         });
         if (res.status === 200) {
           setLoggedIn(true);
-          window.location.assign("/admin");
+          router.push("/admin");
         }
       } catch (err: any) {
         if (err.status && err.status >= 400) {

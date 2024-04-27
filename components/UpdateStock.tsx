@@ -11,11 +11,13 @@ interface UpdateStockProps {
   data: stock;
 }
 function UpdateStock({ children, data }: UpdateStockProps) {
+  const API = process.env.NEXT_PUBLIC_URL;
+
   const [open, setOpen] = useState(false);
   const updateData = (values: stock2) => {
     return new Promise((resolve, reject) => {
       axios
-        .put(`https://gin-backend.onrender.com/admin/stocks/${data.id}`, values)
+        .put(`${API}/admin/stocks/${data.id}`, values)
         .then((res) => {
           setOpen(false);
           window.location.reload();

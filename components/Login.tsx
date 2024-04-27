@@ -12,6 +12,7 @@ interface LoginProps {
 }
 
 function Login({ children }: LoginProps) {
+  const API = process.env.NEXT_PUBLIC_URL;
   const [open, setOpen] = useState(false);
   const router = useRouter();
   const { setLoggedIn } = useAppContext();
@@ -42,13 +43,9 @@ function Login({ children }: LoginProps) {
             }}
             onSubmit={async (values, { setSubmitting }) => {
               setSubmitting(true);
-              let res = await axios.post(
-                "https://gin-backend.onrender.com/login",
-                values,
-                {
-                  withCredentials: true,
-                }
-              );
+              let res = await axios.post(`${API}/login`, values, {
+                withCredentials: true,
+              });
               if (res.status !== 200) {
                 console.error("Authentication failed");
               } else {

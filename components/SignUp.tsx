@@ -12,6 +12,7 @@ interface SignupProps {
 
 function Signup({ children }: SignupProps) {
   const [open, setOpen] = useState(false);
+  const API = process.env.NEXT_PUBLIC_URL;
   return (
     <AlertDialog.Root open={open} onOpenChange={setOpen}>
       <AlertDialog.Trigger asChild>{children}</AlertDialog.Trigger>
@@ -39,10 +40,7 @@ function Signup({ children }: SignupProps) {
             }}
             onSubmit={async (values, { setSubmitting }) => {
               setSubmitting(true);
-              let res = await axios.post(
-                "https://gin-backend.onrender.com/signup",
-                values
-              );
+              let res = await axios.post(`${API}/signup`, values);
               if (res.status !== 200) {
                 console.error("Authentication failed");
               } else if (res.status === 200) {

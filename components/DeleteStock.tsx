@@ -9,11 +9,12 @@ interface DeleteStockProps {
 }
 
 function DeleteStock({ children, data }: DeleteStockProps) {
+  const API = process.env.NEXT_PUBLIC_URL;
   const handleDelete = (values: stock) => {
     return new Promise((resolve, reject) => {
       toast.loading("Deleting stock....");
       axios
-        .delete(`https://gin-backend.onrender.com/admin/stocks/${values.id}`)
+        .delete(`${API}/admin/stocks/${values.id}`)
 
         .then((res) => {
           toast.success("Delete successful");
