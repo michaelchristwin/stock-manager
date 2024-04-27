@@ -15,7 +15,9 @@ export default function Home() {
   useEffect(() => {
     (async () => {
       try {
-        const res = await axios.get("https://gin-backend.onrender.com");
+        const res = await axios.get("https://gin-backend.onrender.com", {
+          withCredentials: true,
+        });
         if (res.status === 200) {
           setLoggedIn(true);
           window.location.assign("/admin");
