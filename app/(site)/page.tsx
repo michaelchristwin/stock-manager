@@ -1,4 +1,9 @@
+"use client";
+
+import axios from "axios";
 import { Pacifico } from "next/font/google";
+import { useEffect } from "react";
+import { useAppContext } from "@/context/LoginContext";
 
 const font = Pacifico({
   weight: "400",
@@ -6,6 +11,24 @@ const font = Pacifico({
 });
 
 export default function Home() {
+  const { setLoggedIn } = useAppContext();
+  useEffect(() => {
+    (async () => {
+      try {
+        const res = await axios.get("https://gin-backend.onrender.com");
+        if (res.status === 200) {
+          setLoggedIn(true);
+          window.location.assign("/admin");
+        }
+      } catch (err: any) {
+        if (err.status && err.status >= 400) {
+          //console.error(err);
+          return;
+        }
+      }
+    })();
+  }, []);
+
   return (
     <div className={`w-full h-[100vh] flex items-center`}>
       <div className={`w-[50%] mx-auto h-[300px]`}>
