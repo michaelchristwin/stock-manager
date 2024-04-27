@@ -20,7 +20,9 @@ function AddStock({ children }: AddStockProps) {
   const submitData = (values: stock2) => {
     return new Promise((resolve, reject) => {
       axios
-        .post(`${API}/admin/stocks`, JSON.stringify(values))
+        .post(`${API}/admin/stocks`, JSON.stringify(values), {
+          withCredentials: true,
+        })
         .then((res) => {
           resolve(res);
           setOpen(false);

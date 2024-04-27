@@ -14,7 +14,9 @@ function DeleteStock({ children, data }: DeleteStockProps) {
     return new Promise((resolve, reject) => {
       toast.loading("Deleting stock....");
       axios
-        .delete(`${API}/admin/stocks/${values.id}`)
+        .delete(`${API}/admin/stocks/${values.id}`, {
+          withCredentials: true,
+        })
 
         .then((res) => {
           toast.success("Delete successful");

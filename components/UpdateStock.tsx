@@ -17,7 +17,9 @@ function UpdateStock({ children, data }: UpdateStockProps) {
   const updateData = (values: stock2) => {
     return new Promise((resolve, reject) => {
       axios
-        .put(`${API}/admin/stocks/${data.id}`, values)
+        .put(`${API}/admin/stocks/${data.id}`, values, {
+          withCredentials: true,
+        })
         .then((res) => {
           setOpen(false);
           window.location.reload();
