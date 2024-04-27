@@ -3,6 +3,7 @@
 import AddStock from "@/components/AddStock";
 import DeleteStock from "@/components/DeleteStock";
 import UpdateStock from "@/components/UpdateStock";
+import { useAppContext } from "@/context/LoginContext";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
@@ -16,6 +17,7 @@ export type stock = {
 function Admin() {
   const [stocks, setStocks] = useState<stock[] | undefined>(undefined);
   const router = useRouter();
+  const { setLoggedIn } = useAppContext();
   const API = process.env.NEXT_PUBLIC_URL;
   useEffect(() => {
     (async () => {
@@ -35,6 +37,7 @@ function Admin() {
           };
           return inventory;
         });
+        setLoggedIn(true);
         //console.log(data);
         setStocks(data);
       } catch (err: any) {
@@ -50,7 +53,7 @@ function Admin() {
     <div className={`w-full space-y-5 p-5`}>
       <div className={`w-full flex justify-start space-x-8 items-center`}>
         <button
-          onClick={() => window.location.reload()}
+          onClick={() => router.refresh()}
           className={`w-fit h-[35px] p-2 rounded-lg text-black hover:opacity-75 active:opacity-60 bg-indigo-600 flex justify-center items-center`}
         >
           <svg

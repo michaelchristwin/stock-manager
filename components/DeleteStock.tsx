@@ -2,6 +2,7 @@ import { stock } from "@/app/admin/page";
 import * as AlertDialog from "@radix-ui/react-alert-dialog";
 import axios from "axios";
 import toast from "react-hot-toast";
+import { useRouter } from "next/navigation";
 
 interface DeleteStockProps {
   children: React.ReactNode;
@@ -10,6 +11,7 @@ interface DeleteStockProps {
 
 function DeleteStock({ children, data }: DeleteStockProps) {
   const API = process.env.NEXT_PUBLIC_URL;
+  const router = useRouter();
   const handleDelete = (values: stock) => {
     return new Promise((resolve, reject) => {
       toast.loading("Deleting stock....");
@@ -21,7 +23,7 @@ function DeleteStock({ children, data }: DeleteStockProps) {
         .then((res) => {
           toast.success("Delete successful");
           resolve(res);
-          window.location.reload();
+          router.refresh();
         })
         .catch((err) => {
           reject(err);

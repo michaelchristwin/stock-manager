@@ -2,6 +2,7 @@
 
 import * as AlertDialog from "@radix-ui/react-alert-dialog";
 import { ErrorMessage, Field, Form, Formik } from "formik";
+import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
 import axios from "axios";
 import { useState } from "react";
@@ -16,6 +17,7 @@ export type stock2 = {
 
 function AddStock({ children }: AddStockProps) {
   const [open, setOpen] = useState(false);
+  const router = useRouter();
   const API = process.env.NEXT_PUBLIC_URL;
   const submitData = (values: stock2) => {
     return new Promise((resolve, reject) => {
@@ -26,7 +28,7 @@ function AddStock({ children }: AddStockProps) {
         .then((res) => {
           resolve(res);
           setOpen(false);
-          window.location.reload();
+          router.refresh();
         })
         .catch((err) => reject(err));
     });

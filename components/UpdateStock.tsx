@@ -1,4 +1,5 @@
 "use client";
+
 import * as AlertDialog from "@radix-ui/react-alert-dialog";
 import { ErrorMessage, Field, Form, Formik } from "formik";
 import toast from "react-hot-toast";
@@ -6,13 +7,14 @@ import axios from "axios";
 import { useState } from "react";
 import { stock } from "@/app/admin/page";
 import { stock2 } from "./AddStock";
+import { useRouter } from "next/navigation";
 interface UpdateStockProps {
   children: React.ReactNode;
   data: stock;
 }
 function UpdateStock({ children, data }: UpdateStockProps) {
   const API = process.env.NEXT_PUBLIC_URL;
-
+  const router = useRouter();
   const [open, setOpen] = useState(false);
   const updateData = (values: stock2) => {
     return new Promise((resolve, reject) => {
@@ -22,7 +24,7 @@ function UpdateStock({ children, data }: UpdateStockProps) {
         })
         .then((res) => {
           setOpen(false);
-          window.location.reload();
+          router.refresh();
           resolve(res);
         })
         .catch((err) => reject(err));
